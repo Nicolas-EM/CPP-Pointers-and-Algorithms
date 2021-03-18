@@ -9,6 +9,7 @@ Mode 1:
 * Invert row      - voltearF()
 * Invert column   - voltearC()
 * Invert diagonal - voltearD()
+
 Mode 2:
 * Reflect vertically    - voltearV()
 * Reflect horizontally  - voltearH()
