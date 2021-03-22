@@ -152,7 +152,7 @@ bool swapAdy(tMatrizChar& mat, tCoor pos1, tCoor pos2) {
     return true;
 }
 
-bool VoltearID(tMatrizChar& mat) {
+bool voltearID(tMatrizChar& mat) {
     if (mat.numCol != mat.numFilas) return false;   // matriz no es cuadrada
 
     for (unsigned int x = 0; x < mat.numFilas - 1; x++) {

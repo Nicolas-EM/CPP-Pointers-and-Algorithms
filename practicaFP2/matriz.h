@@ -33,6 +33,6 @@ void voltearV(tMatrizChar& mat);    // dar la vuelta a la imagen completa con re
 void voltearH(tMatrizChar& mat);    // dar la vuelta a la imagen completa con respecto a su eje horizontal central.
 void rotarD(tMatrizChar& mat); // rotar una imagen 90 grados en el sentido de las agujas del reloj.
 bool swapAdy(tMatrizChar& mat, tCoor pos1, tCoor pos2);    // intercambiar las celdas vecinas o adyacentes de las posiciones pos1 y pos2.
-bool VoltearID(tMatrizChar& mat);  // Voltear la imagen completa respecto a la diagonal principal. Devuelve falso si la matriz no es cuadrada.
+bool voltearID(tMatrizChar& mat);  // Voltear la imagen completa respecto a la diagonal principal. Devuelve falso si la matriz no es cuadrada.
 
 #endif

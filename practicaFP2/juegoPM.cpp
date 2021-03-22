@@ -197,7 +197,7 @@ void accion(tJuegoPM &jpm){
             else cout << "Posiciones invalidas! Posicion maxima: " << DIM_MAX << "\n";
         }
         else if (accion == "VD") {
-            if (VoltearID(jpm.inicial)) jpm.actionsUsed++;
+            if (voltearID(jpm.inicial)) jpm.actionsUsed++;
             else cout << "Matriz no es cuadrada!\n";
         }
         else cout << "Invalid action\n";
