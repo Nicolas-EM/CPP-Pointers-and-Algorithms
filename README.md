@@ -1,4 +1,4 @@
-# image-manipulation-CPP
+# C++ Pointers Puzzle Game
 C++ 2D array project for Programming Fundamentals II at UCM
 
 ## CPP_Pointers
