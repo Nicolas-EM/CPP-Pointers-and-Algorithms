@@ -1,0 +1,166 @@
+// Autores: Nicolas Espinosa Mooser, Diego Chocano Ramos
+
+#include "ListaPuzzles_opcional.h"
+#include <fstream>
+using namespace std;
+
+void init(tPuzzlesReunidos& jr) {
+	for (int i = 0; i < 2; i++) {
+		for(int x = 0; x < MAX_PUZZLE; x++) jr[i].lista = nullptr;
+	}
+	if (!cargar(jr)) cout << "Failed to load datosPuzzles.txt\n";
+}
+
+bool cargar(tPuzzlesReunidos& jr) {
+	ifstream in("datosPuzzles.txt");
+	if (in.is_open()) {
+		for (int i = 0; i < 2; i++) {
+			int numPuzzles;
+			in >> numPuzzles;
+			for (int x = 0; x < numPuzzles; x++) {
+				tPuzzle* p = new tPuzzle;
+				string nombre, fichero;
+				in.get();
+				getline(in, nombre);
+				in >> fichero;
+				p->name = nombre;
+				p->file = fichero;
+				p->modo = i+1;
+				p->actionsUsed = 0;
+				if(!cargar(*p)) return false;
+				jr[i].lista[x] = *p;
+                jr[i].numPuzzle++;
+			}
+		}
+	}
+	else cerr << "Failed to open datosPuzzles.txt\n";
+	return true;
+}
+
+int elegirPuzzle(tListaPuzzle& lp){
+	int opcion = 1;
+	do {
+		switch (opcion) {
+		case -1:
+			mayorAMenor(lp);
+			break;
+		case -2:
+			menorAMayor(lp);
+		default:
+			menorAMayor(lp);
+			break;
+		}
+		cout << "\n\t---\n";
+		cout << "Puzzles disponibles:\n";
+		printPz(lp);
+		cout << "0 Salir\n";
+		cout << "-1 Mostrar lista ordenada de mayor a menor\n";
+		cout << "-2 Mostrar lista ordenada de menor a mayor\n";
+		cout << "Option: ";
+		cin >> opcion;
+	} while (opcion == -1 || opcion == -2);
+	return --opcion;
+}
+
+void printPz(const tListaPuzzle& lp){
+    for(int i = 0; i < lp.numPuzzle; i++){
+        cout << i + 1 << " " << lp.lista[i].name << " (" << lp.lista[i].maxMoves << " movimientos)\n";
+	}
+}
+
+void menorAMayor(tListaPuzzle& lp) {
+	int x;
+    for(int i = 1; i < lp.numPuzzle; i++){
+		tPuzzle p = lp.lista[i];
+		x = i;
+		while ((x > 0) && (p.maxMoves < lp.lista[x - 1].maxMoves)) {
+			lp.lista[x] = lp.lista[x - 1];
+			x--;
+		}
+		lp.lista[x] = p;
+		i++;
+	}
+}
+
+void mayorAMenor(tListaPuzzle& lp) {
+	int x;
+    for(int i = 1; i < lp.numPuzzle; i++){
+		tPuzzle p = lp.lista[i];
+		x = i;
+		while ((x > 0) && (p.maxMoves > lp.lista[x - 1].maxMoves)) {
+			lp.lista[x] = lp.lista[x - 1];
+			x--;
+		}
+		lp.lista[x] = p;
+		i++;
+	}
+}
+
+void nuevoPz(tPuzzlesReunidos& pr) {
+	cout << "\nJuegos 1D:\n";
+	printPz(pr[0]);
+	cout << "\n\t---\n";
+	cout << "Juegos 2D:\n";
+	printPz(pr[1]);
+	cin.get();
+	cout << "Escriba el nombre del puzzle: ";
+	string nombre;
+	getline(cin, nombre);
+	cout << "Escriba el nombre del fichero: ";
+	string fichero;
+	cin >> fichero;
+	// calculando posicion del modo - "XD.txt"
+	int posModo = fichero.length() - 6;
+	tPuzzle* p = new tPuzzle;
+	p->name = nombre;
+	p->file = fichero;
+	p->modo = fichero[posModo] - '0';
+	p->actionsUsed = 0;
+	int pos;
+	if (cargar(*p) && !buscar(pr[p->modo-1], p, pos)) {
+		if (insertOrd(pr[p->modo - 1], p)) {
+			cout << "\n";
+			printPz(pr[p->modo - 1]);
+			guardar(pr);
+			cout << "\n";
+		}
+		else cout << "No se pudo insertar\n\n";
+	}
+	else cout << "Ese puzzle ya existe o el archivo no existe!\n";
+}
+
+void guardar(const tPuzzlesReunidos& listas) {
+	fstream out("datosPuzzles.txt");
+	if (out.is_open()) {
+        int size_1 = listas[0].numPuzzle, size_2 = listas[1].numPuzzle;
+		out << size_1 << "\n";
+		for (int i = 0; i < size_1; i++) {
+			out << listas[0].lista[i].name << "\n";
+			out << listas[0].lista[i].file << "\n";
+		}
+		out << size_2 << "\n";
+		for (int i = 0; i < size_2; i++) {
+			out << listas[1].lista[i].name << "\n";
+			out << listas[1].lista[i].file << "\n";
+		}
+	}
+}
+
+bool insertOrd(tListaPuzzle& l, tPuzzle* p) {
+
+	if (l.numPuzzle == MAX_PUZZLE) return false;
+
+	// Despl. a la derecha
+	int i = l.numPuzzle;
+	while (i > 0 && *p < l.lista[i - 1]) {
+		l.lista[i] = l.lista[i - 1];
+		i--;
+	}
+	l.lista[i] = *p;
+
+	return true;
+}
+
+bool buscar(const tListaPuzzle& lista, tPuzzle* puzzle, int& pos) {
+    return false;
+}
