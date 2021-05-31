@@ -1,5 +1,5 @@
 # C++ Pointers Puzzle Game
-C++ 2D array project for Programming Fundamentals II at UCM
+C++ Project to practice the use of pointers and common algorithms for Programming Fundamentals II at UCM
 
 ## CPP_Pointers
 The project implements a list of puzzles using a dynamic array to dynamic elements.
